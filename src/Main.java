@@ -4,6 +4,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -17,23 +19,37 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 
-public class Main extends JFrame{
+public class Main extends JFrame {
 
 	public static ArrayList<ElementImported> elements = new ArrayList<ElementImported>();
 	public static JFrame frame;
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-		
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+		    // If Nimbus is not available, fall back to cross-platform
+		    try {
+		        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+		    } catch (Exception ex) {
+		        // not worth my time
+		    }
+		}
 		JFrame.setDefaultLookAndFeelDecorated(true);
-	    frame = new JFrame("UI Output");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setLayout(null);
-	    
-	    
-	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);;
-	    frame.setVisible(true);
-		
+		frame = new JFrame("UI Output");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(null);
+
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		;
+		frame.setVisible(true);
+
 		try {
 
 			File fXmlFile = new File(fileChooser());
@@ -78,15 +94,9 @@ public class Main extends JFrame{
 			e.printStackTrace();
 		}
 
-parseElements();
+		parseElements();
 
-		
-	
-		
 	}
-	
-
-	
 
 	public static String fileChooser() {
 		JFileChooser fileChooser;
@@ -106,79 +116,87 @@ parseElements();
 		type = path.toString();
 		return fileChooser.getSelectedFile().toString();
 	}
-	
+
 	public static void parseElements() {
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i).getType().equals("label")) {
 				JLabel test = new JLabel(elements.get(i).getText());
-				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
-				Font newLabelFont; 
-			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
-			    test.setFont(newLabelFont); 
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
+						elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont;
+				newLabelFont = new Font(test.getFont().getName(), test.getFont().getStyle(),
+						elements.get(i).getFontSize());
+				test.setFont(newLabelFont);
+
 				frame.add(test);
 				frame.revalidate();
 				frame.repaint();
-				/*// init
-				content += " \r\n    JLabel " + NumberToWords(i) + " = new JLabel(\"" + elements.get(i).getText()
-						+ "\");\r\n";
-				// setbounds
-				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
-						+ elements.get(i).getyCoordinate() + "," + elements.get(i).getWidth() + ", "
-						+ elements.get(i).getHeight() + ");";
-				// setfont
-				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
-						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
-				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
-				// add to frame
-				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n "*/;
+				/*
+				 * // init content += " \r\n    JLabel " + NumberToWords(i) + " = new JLabel(\""
+				 * + elements.get(i).getText() + "\");\r\n"; // setbounds content += "\r\n    "
+				 * + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
+				 * + elements.get(i).getyCoordinate() + "," + elements.get(i).getWidth() + ", "
+				 * + elements.get(i).getHeight() + ");"; // setfont content +=
+				 * "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+				 * + NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize()
+				 * + ");"; content += "\r\n    " + NumberToWords(i) +
+				 * ".setFont(newLabelFont); "; // add to frame content += "\r\n    frame.add(" +
+				 * NumberToWords(i) + "); \r\n "
+				 */;
 
 			} else if (elements.get(i).getType().equals("textfield")) {
 				JTextField test = new JTextField(elements.get(i).getText());
-				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
-				Font newLabelFont; 
-			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
-			    test.setFont(newLabelFont); 
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
+						elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont;
+				newLabelFont = new Font(test.getFont().getName(), test.getFont().getStyle(),
+						elements.get(i).getFontSize());
+				test.setFont(newLabelFont);
+				test.setBorder(null);
+
 				frame.add(test);
 				frame.revalidate();
 				frame.repaint();
-				/*// init
-				content += " \r\n    JTextField " + NumberToWords(i) + " = new JTextField(\""
-						+ elements.get(i).getText() + "\");\r\n";
-				// setbounds
-				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
-						+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
-						+ elements.get(i).getHeight() + ");";
-				// setfont
-				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
-						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
-				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
-				// add to frame
-				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";*/
+				/*
+				 * // init content += " \r\n    JTextField " + NumberToWords(i) +
+				 * " = new JTextField(\"" + elements.get(i).getText() + "\");\r\n"; // setbounds
+				 * content += "\r\n    " + NumberToWords(i) + ".setBounds(" +
+				 * elements.get(i).getxCoordinate() + ", " + elements.get(i).getyCoordinate() +
+				 * ", " + elements.get(i).getWidth() + ", " + elements.get(i).getHeight() +
+				 * ");"; // setfont content += "\r\n    newLabelFont=new Font(" +
+				 * NumberToWords(i) + ".getFont().getName()," + NumberToWords(i) +
+				 * ".getFont().getStyle()," + elements.get(i).getFontSize() + ");"; content +=
+				 * "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); "; // add to frame
+				 * content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
+				 */
 
 			} else if (elements.get(i).getType().equals("button")) {
-				
+
 				JButton test = new JButton(elements.get(i).getText());
-				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
-				Font newLabelFont; 
-			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
-			    test.setFont(newLabelFont); 
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
+						elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont;
+				newLabelFont = new Font(test.getFont().getName(), test.getFont().getStyle(),
+						elements.get(i).getFontSize());
+				test.setFont(newLabelFont);
+
+				test.setBorder(null);
 				frame.add(test);
 				frame.revalidate();
 				frame.repaint();
 				// init
-				/*content += " \r\n    JButton " + NumberToWords(i) + " = new JButton(\"" + elements.get(i).getText()
-						+ "\");\r\n";
-				// setbounds
-				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
-						+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
-						+ elements.get(i).getHeight() + ");";
-				// setfont
-				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
-						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
-				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
-				// add to frame
-				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
-*/
+				/*
+				 * content += " \r\n    JButton " + NumberToWords(i) + " = new JButton(\"" +
+				 * elements.get(i).getText() + "\");\r\n"; // setbounds content += "\r\n    " +
+				 * NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", " +
+				 * elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", " +
+				 * elements.get(i).getHeight() + ");"; // setfont content +=
+				 * "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+				 * + NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize()
+				 * + ");"; content += "\r\n    " + NumberToWords(i) +
+				 * ".setFont(newLabelFont); "; // add to frame content += "\r\n    frame.add(" +
+				 * NumberToWords(i) + "); \r\n ";
+				 */
 			}
 		}
 	}
