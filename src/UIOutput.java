@@ -4,7 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import java.awt.Font;
-public class NoLayoutTest extends JFrame {
+public class UIOutput extends JFrame {
 
   public static void main(String[] args) {
     JFrame.setDefaultLookAndFeelDecorated(true);

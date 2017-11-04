@@ -1,27 +1,41 @@
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
-
+import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 
-public class Main {
+public class Main extends JFrame{
 
 	public static ArrayList<ElementImported> elements = new ArrayList<ElementImported>();
-
+	public static JFrame frame;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		try {
 		
+		JFrame.setDefaultLookAndFeelDecorated(true);
+	    frame = new JFrame("UI Output");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frame.setLayout(null);
+	    
+	    
+	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);;
+	    frame.setVisible(true);
+		
+		try {
+
 			File fXmlFile = new File(fileChooser());
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -64,15 +78,20 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		WriteToFile();
+parseElements();
 
+		
+	
+		
 	}
+	
+
+	
 
 	public static String fileChooser() {
 		JFileChooser fileChooser;
 
 		fileChooser = new JFileChooser();
-
 
 		File path;
 
@@ -85,7 +104,83 @@ public class Main {
 
 		path = fileChooser.getSelectedFile();
 		type = path.toString();
-		 return fileChooser.getSelectedFile().toString();
+		return fileChooser.getSelectedFile().toString();
+	}
+	
+	public static void parseElements() {
+		for (int i = 0; i < elements.size(); i++) {
+			if (elements.get(i).getType().equals("label")) {
+				JLabel test = new JLabel(elements.get(i).getText());
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont; 
+			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
+			    test.setFont(newLabelFont); 
+				frame.add(test);
+				frame.revalidate();
+				frame.repaint();
+				/*// init
+				content += " \r\n    JLabel " + NumberToWords(i) + " = new JLabel(\"" + elements.get(i).getText()
+						+ "\");\r\n";
+				// setbounds
+				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
+						+ elements.get(i).getyCoordinate() + "," + elements.get(i).getWidth() + ", "
+						+ elements.get(i).getHeight() + ");";
+				// setfont
+				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
+				// add to frame
+				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n "*/;
+
+			} else if (elements.get(i).getType().equals("textfield")) {
+				JTextField test = new JTextField(elements.get(i).getText());
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont; 
+			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
+			    test.setFont(newLabelFont); 
+				frame.add(test);
+				frame.revalidate();
+				frame.repaint();
+				/*// init
+				content += " \r\n    JTextField " + NumberToWords(i) + " = new JTextField(\""
+						+ elements.get(i).getText() + "\");\r\n";
+				// setbounds
+				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
+						+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
+						+ elements.get(i).getHeight() + ");";
+				// setfont
+				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
+				// add to frame
+				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";*/
+
+			} else if (elements.get(i).getType().equals("button")) {
+				
+				JButton test = new JButton(elements.get(i).getText());
+				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(), elements.get(i).getWidth(), elements.get(i).getHeight());
+				Font newLabelFont; 
+			    newLabelFont=new Font(test.getFont().getName(),test.getFont().getStyle(),elements.get(i).getFontSize());
+			    test.setFont(newLabelFont); 
+				frame.add(test);
+				frame.revalidate();
+				frame.repaint();
+				// init
+				/*content += " \r\n    JButton " + NumberToWords(i) + " = new JButton(\"" + elements.get(i).getText()
+						+ "\");\r\n";
+				// setbounds
+				content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
+						+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
+						+ elements.get(i).getHeight() + ");";
+				// setfont
+				content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+						+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+				content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
+				// add to frame
+				content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
+*/
+			}
+		}
 	}
 
 	public static void WriteToFile() {
@@ -96,11 +191,12 @@ public class Main {
 
 			String header = "import javax.swing.JFrame;\r\n" + "import javax.swing.JLabel;\r\n"
 					+ "import javax.swing.JButton;\r\n" + "import javax.swing.JTextField;\r\n" + "\r\n"
-					+ "public class NoLayoutTest extends JFrame {\r\n" + "\r\n"
+					+ "import java.awt.Font;\r\n" + "public class UIOutput extends JFrame {\r\n" + "\r\n"
 					+ "  public static void main(String[] args) {\r\n"
 					+ "    JFrame.setDefaultLookAndFeelDecorated(true);\r\n"
 					+ "    JFrame frame = new JFrame(\"UI Output\");\r\n"
-					+ "    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n" + "    frame.setLayout(null);";
+					+ "    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n" + "    frame.setLayout(null);"
+					+ "Font newLabelFont;";
 
 			String content = "";
 
@@ -113,6 +209,10 @@ public class Main {
 					content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
 							+ elements.get(i).getyCoordinate() + "," + elements.get(i).getWidth() + ", "
 							+ elements.get(i).getHeight() + ");";
+					// setfont
+					content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+							+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+					content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
 					// add to frame
 					content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
 
@@ -124,6 +224,10 @@ public class Main {
 					content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
 							+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
 							+ elements.get(i).getHeight() + ");";
+					// setfont
+					content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+							+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+					content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
 					// add to frame
 					content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
 
@@ -135,6 +239,10 @@ public class Main {
 					content += "\r\n    " + NumberToWords(i) + ".setBounds(" + elements.get(i).getxCoordinate() + ", "
 							+ elements.get(i).getyCoordinate() + ", " + elements.get(i).getWidth() + ", "
 							+ elements.get(i).getHeight() + ");";
+					// setfont
+					content += "\r\n    newLabelFont=new Font(" + NumberToWords(i) + ".getFont().getName(),"
+							+ NumberToWords(i) + ".getFont().getStyle()," + elements.get(i).getFontSize() + ");";
+					content += "\r\n    " + NumberToWords(i) + ".setFont(newLabelFont); ";
 					// add to frame
 					content += "\r\n    frame.add(" + NumberToWords(i) + "); \r\n ";
 
@@ -144,7 +252,7 @@ public class Main {
 					+ ";\r\n    frame.setVisible(true);\r\n";
 			content += "  }\r\n" + "}";
 
-			fw = new FileWriter("‪outputOfParser.java");
+			fw = new FileWriter(new File("C:\\School\\Eclipse EE\\CMPILERUIParser\\src", "‪UIOutput.java"));
 			bw = new BufferedWriter(fw);
 			bw.write(header + content);
 
