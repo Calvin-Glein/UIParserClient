@@ -28,6 +28,7 @@ import java.io.IOException;
 public class UIParser {
 
 	public ArrayList<ElementImported> elements = new ArrayList<ElementImported>();
+	public ArrayList<Integer> layers = new ArrayList<Integer>();
 	public JFrame frame;
 
 	public UIParser() {
@@ -125,6 +126,8 @@ public class UIParser {
 							Integer.parseInt(eElement.getElementsByTagName("Height").item(0).getTextContent()),
 							Integer.parseInt(eElement.getElementsByTagName("Layer").item(0).getTextContent()),
 							Integer.parseInt(eElement.getElementsByTagName("FontSize").item(0).getTextContent())));
+
+
 				}
 			}
 		} catch (Exception e) {
@@ -155,7 +158,9 @@ public class UIParser {
 	}
 
 	public void parseElements() {
-		for (int i = elements.size() - 1; i > 0; i--) {
+		for (int i = elements.size() - 1; i >= 0; i--) {
+
+
 			if (elements.get(i).getType().equals("label")) {
 				JLabel test = new JLabel(elements.get(i).getText());
 				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
