@@ -1,19 +1,19 @@
-import javax.swing.JFrame;
+import javax.swing.*;
+
 import net.miginfocom.swing.MigLayout;
 
+import java.awt.*;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -21,7 +21,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
-import java.awt.Font;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -79,6 +78,7 @@ public class UIParser {
 		frame = new JFrame("UI Output");
 		frame.getContentPane().setLayout(null);
 
+
 		frame.setSize(1366, 768);
 		frame.setVisible(true);
 	}
@@ -98,6 +98,12 @@ public class UIParser {
 			NodeList nList = doc.getElementsByTagName("Element");
 
 			System.out.println("----------------------------");
+
+			//re init arraylist of elements
+
+			elements = new ArrayList<ElementImported>();
+
+
 
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -149,7 +155,7 @@ public class UIParser {
 	}
 
 	public void parseElements() {
-		for (int i = 0; i < elements.size(); i++) {
+		for (int i = elements.size() - 1; i > 0; i--) {
 			if (elements.get(i).getType().equals("label")) {
 				JLabel test = new JLabel(elements.get(i).getText());
 				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
@@ -158,6 +164,8 @@ public class UIParser {
 				newLabelFont = new Font(test.getFont().getName(), test.getFont().getStyle(),
 						elements.get(i).getFontSize());
 				test.setFont(newLabelFont);
+
+				test.setSize( test.getPreferredSize() );
 
 				frame.getContentPane().add(test);
 				frame.revalidate();
@@ -203,16 +211,44 @@ public class UIParser {
 
 			} else if (elements.get(i).getType().equals("button")) {
 
-				JButton test = new JButton(elements.get(i).getText());
-				test.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
+//				JPanel component = new JPanel();
+//
+//				LayoutManager overlay = new OverlayLayout(component);
+
+				JButton button = new JButton();
+				button.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
+						elements.get(i).getWidth(), elements.get(i).getHeight());
+
+				JLabel label = new JLabel(elements.get(i).getText());
+				label.setLayout(new BorderLayout());
+//				label.add(button);
+
+				label.setBounds(elements.get(i).getxCoordinate(), elements.get(i).getyCoordinate(),
 						elements.get(i).getWidth(), elements.get(i).getHeight());
 				Font newLabelFont;
-				newLabelFont = new Font(test.getFont().getName(), test.getFont().getStyle(),
+				newLabelFont = new Font(label.getFont().getName(), label.getFont().getStyle(),
 						elements.get(i).getFontSize());
-				test.setFont(newLabelFont);
+				label.setFont(newLabelFont);
+				Dimension dimension = new Dimension(label.getPreferredSize().width + 10, label.getPreferredSize().height);
+				label.setSize(dimension);
 
-				test.setBorder(null);
-				frame.getContentPane().add(test);
+//				component.add(label);
+//				component.add(button);
+
+				//test.setSize( test.getPreferredSize() );
+//				test.setMargin(new Insets(0,0,0,0));
+//				test.setBorder(null);
+				if (button.getHeight() <= label.getHeight() || button.getWidth() <= label.getWidth()){
+					label.setBorder(new EmptyBorder(0,10,0,0));//top,left,bottom,right
+					frame.getContentPane().add(label);
+					frame.getContentPane().add(button);
+				}
+				else{
+					button.setText(label.getText());
+					button.setBorder(null);
+					button.setFont(newLabelFont);
+					frame.getContentPane().add(button);
+				}
 				frame.revalidate();
 				frame.repaint();
 				// init
